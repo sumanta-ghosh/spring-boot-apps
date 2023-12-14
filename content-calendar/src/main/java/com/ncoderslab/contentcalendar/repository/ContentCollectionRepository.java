@@ -22,13 +22,30 @@ public class ContentCollectionRepository {
         return content;
     }
 
-    public Optional<Content> findBYId(Integer id) {
+    public Optional<Content> findById(Integer id) {
         return content.stream().filter(c -> c.id().equals(id)).findFirst();
+    }
+
+    public void save(Content content) {
+        this.content.add(content);
     }
 
     @PostConstruct
     private void init() {
-        Content c = new Content(1, "My First Blog post", "Description", Status.COMPLETED, Type.ARTICLE, LocalDateTime.now(), null, "");
-        content.add(c);
+        Content content = new Content(1, "My First Blog post", "Description", Status.COMPLETED, Type.ARTICLE, LocalDateTime.now(), null, "");
+        this.content.add(content);
+    }
+
+    public boolean existById(Integer id) {
+        return content.stream().filter(c -> c.id().equals(id)).count() == 1;
+    }
+
+    public void update(Content content) {
+        this.content.removeIf(c -> c.id().equals(content.id()));
+        this.content.add(content);
+    }
+
+    public void delete(Integer id) {
+        this.content.removeIf(c -> c.id().equals(id));
     }
 }
