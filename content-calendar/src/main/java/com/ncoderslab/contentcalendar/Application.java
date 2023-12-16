@@ -11,7 +11,7 @@ public class Application {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        Arrays.stream(ctx.getBeanDefinitionNames()).forEach(System.out::println);
+        //Arrays.stream(ctx.getBeanDefinitionNames()).forEach(System.out::println);
 
         int beanDefinitionCount = ctx.getBeanDefinitionCount();
         System.out.println(beanDefinitionCount);
