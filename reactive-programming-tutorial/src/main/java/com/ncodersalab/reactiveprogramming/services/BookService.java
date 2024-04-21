@@ -3,6 +3,7 @@ package com.ncodersalab.reactiveprogramming.services;
 import com.ncodersalab.reactiveprogramming.domain.Book;
 import com.ncodersalab.reactiveprogramming.domain.BookInfo;
 import com.ncodersalab.reactiveprogramming.domain.Review;
+import com.ncodersalab.reactiveprogramming.exception.BookException;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,11 @@ public class BookService {
         return allBookReviews.flatMap(bookInfo -> {
             Mono<List<Review>> reviews = reviewService.getReviews(bookInfo.getBookId()).collectList();
             return reviews.map(review -> new Book(bookInfo, review));
-        }).log();
+        }).onErrorMap(throwable -> {
+                    log.info("Original Exception -> {}", throwable.getMessage());
+                    return new BookException("Exception happened!!!!");
+                }
+        ).log();
     }
 
     public Mono<Book> getBookById(long bookId) {
