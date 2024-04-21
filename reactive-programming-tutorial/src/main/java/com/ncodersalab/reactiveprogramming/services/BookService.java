@@ -27,4 +27,10 @@ public class BookService {
             return reviews.map(review -> new Book(bookInfo, review));
         }).log();
     }
+
+    public Mono<Book> getBookById(long bookId) {
+        Mono<BookInfo> bookInfo = bookInfoService.getBookById(bookId);
+        Mono<List<Review>> reviews = reviewService.getReviews(bookId).collectList();
+        return bookInfo.zipWith(reviews, Book::new).log();
+    }
 }

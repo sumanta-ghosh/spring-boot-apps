@@ -14,7 +14,7 @@ public class BookInfoService {
     }
 
     public Mono<BookInfo> getBookById(long bookId) {
-        BookInfo bookInfo = new BookInfo(bookId, "Book One", "Author One", "123");
+        BookInfo bookInfo = new BookInfo(bookId, "Book " + bookId, "Author One", "123");
         return Mono.just(bookInfo);
     }
 }
